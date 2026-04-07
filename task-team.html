@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Team – FASD Awareness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #17304d;
+            --blue:   #1f6fbf;
+            --sky:    #4da6e8;
+            --teal:   #1a9e8f;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.12);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: #fff;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── FULL PAGE BACKGROUND ─── */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('images/images/9b8d66e6-dfe9-4ec0-9901-92dc4b5b26af.png');  
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 42, 0.78);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 28, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 26px; list-style: none; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.65);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ─── PAGE WRAPPER ─── */
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 130px 40px 100px;
+        }
+
+        /* ─── HERO ─── */
+        .page-hero {
+            margin-bottom: 72px;
+            max-width: 740px;
+        }
+        .eyebrow {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 14px;
+        }
+        .page-hero h1 {
+            font-family: "Lora", serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--sky); }
+        .page-hero p {
+            font-size: 1.02rem;
+            color: rgba(255,255,255,.65);
+            line-height: 1.78;
+            max-width: 620px;
+        }
+
+        /* ─── SECTION LABEL ─── */
+        .section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin: 56px 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ─── STAT STRIP ─── */
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .stat-card .num {
+            font-family: "Lora", serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sky);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-card p {
+            font-size: .8rem;
+            color: rgba(255,255,255,.55);
+            line-height: 1.45;
+        }
+
+        /* ─── PROSE GLASS ─── */
+        .prose-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.11);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 18px;
+            padding: 34px 38px;
+            margin-bottom: 20px;
+        }
+        .prose-glass p {
+            font-size: .96rem;
+            color: rgba(255,255,255,.75);
+            line-height: 1.85;
+            margin-bottom: 14px;
+        }
+        .prose-glass p:last-child { margin-bottom: 0; }
+        .prose-glass strong { color: #fff; font-weight: 600; }
+
+        /* ─── MEMBERS GRID ─── */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .member-tag {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.11);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            transition: background .2s, transform .2s;
+        }
+        .member-tag:hover {
+            background: rgba(255,255,255,.13);
+            transform: translateY(-2px);
+        }
+        .member-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--teal);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+        .member-tag p {
+            font-size: .87rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.5;
+        }
+        .member-tag p strong { color: #fff; font-size: .88rem; }
+
+        /* ─── ACHIEVEMENTS ─── */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .achieve-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.11);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 24px 22px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: background .2s, transform .2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .achieve-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(180deg, var(--blue), var(--teal));
+            border-radius: 3px 0 0 3px;
+        }
+        .achieve-card:hover {
+            background: rgba(255,255,255,.12);
+            transform: translateY(-2px);
+        }
+        .achieve-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .achieve-icon svg { width: 18px; height: 18px; color: #fff; }
+        .achieve-card p {
+            font-size: .9rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.65;
+            padding-top: 2px;
+        }
+        .achieve-card p strong { color: #fff; }
+
+        /* ─── TIMELINE ─── */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 20px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--blue), var(--teal), rgba(255,255,255,.05));
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+        }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 6px;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--teal);
+            border: 2px solid rgba(255,255,255,.2);
+        }
+        .t-year {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 4px;
+        }
+        .timeline-item p {
+            font-size: .92rem;
+            color: rgba(255,255,255,.75);
+            line-height: 1.7;
+        }
+        .timeline-item p strong { color: #fff; }
+
+        /* ─── SEND BUTTON ─── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: #fff;
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 18px rgba(0,0,0,.25);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); box-shadow: 8px 8px 24px rgba(0,0,0,.32); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.5);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ─── CTA ─── */
+        .cta-glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 48px 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-top: 56px;
+        }
+        .cta-glass h2 {
+            font-family: "Lora", serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .cta-glass p { font-size: .93rem; color: rgba(255,255,255,.65); max-width: 420px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: rgba(10, 22, 40, 0.75);
+            backdrop-filter: blur(12px);
+            color: rgba(255,255,255,.45);
+            text-align: center;
+            padding: 22px 40px;
+            font-size: .82rem;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        footer a { color: var(--sky); text-decoration: none; }
+
+        /* ─── REVEAL ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 700px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(15,28,50,.96);
+                border-bottom: 1px solid rgba(255,255,255,.1);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            .mobile-toggle { display: block; }
+            .page { padding: 110px 20px 80px; }
+            .prose-glass { padding: 24px 22px; }
+            .cta-glass { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD Awareness <span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html" class="active">Task Team</a></li>
+            <li><a href="health-promotion.html">Health Promotion</a></li>
+            <li><a href="supporting-someone.html">Support</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="page-hero" data-reveal>
+        <p class="eyebrow">F.A.S.D — Western Cape</p>
+        <h1>The Western Cape<br><em>FASD Network</em></h1>
+        <p>A collaborative network of government departments, NGOs, researchers and healthcare professionals united in the prevention and awareness of Fetal Alcohol Spectrum Disorders across the Western Cape and South Africa.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stat-strip" data-reveal>
+        <div class="stat-card">
+            <div class="num">2001</div>
+            <p>Year the FAS reference group was established</p>
+        </div>
+        <div class="stat-card">
+            <div class="num">100%</div>
+            <p>FASD is preventable — no alcohol means no FASD</p>
+        </div>
+        <div class="stat-card">
+            <div class="num">9 Sep</div>
+            <p>International FASD Awareness Day</p>
+        </div>
+        <div class="stat-card">
+            <div class="num">WC</div>
+            <p>Western Cape provincial health priority 2001–2002</p>
+        </div>
+    </div>
+
+    <!-- HISTORY -->
+    <p class="section-label">History</p>
+
+    <div class="prose-glass" data-reveal>
+        <p>A Western Cape Provincial Fetal Alcohol Syndrome (FAS) reference and working group was established following a <strong>strategic meeting on provincial level in 2001</strong>. FAS was declared a <strong>provincial health priority between 2001 and 2002</strong> by the then MEC of Health.</p>
+        <p>The group was chaired by the provincial Maternal, Child and Women's Health Deputy Director, with members selected from the Department of Social Services, Department of Education, FAS regional coordinators in the Department of Health, and academic and NGO partners.</p>
+        <p>Since 2006 the group was no longer chaired by the Provincial Department of Health, but <strong>continued operating as a network</strong> consisting mainly of the NGO sector and researchers committed to the prevention of FASD.</p>
+    </div>
+
+    <!-- TIMELINE -->
+    <p class="section-label">Key Milestones</p>
+
+    <div class="prose-glass" data-reveal>
+        <div class="timeline">
+            <div class="timeline-item">
+                <p class="t-year">2001</p>
+                <p>Western Cape Provincial FAS reference and working group <strong>established</strong> following a strategic provincial meeting.</p>
+            </div>
+            <div class="timeline-item">
+                <p class="t-year">2001 – 2002</p>
+                <p>FAS declared a <strong>Western Cape provincial health priority</strong> by the MEC of Health.</p>
+            </div>
+            <div class="timeline-item">
+                <p class="t-year">2006</p>
+                <p>Group <strong>transitions</strong> from provincial government leadership to NGO and research-sector driven network — the WC FASD Network — continuing collaborative prevention work.</p>
+            </div>
+            <div class="timeline-item">
+                <p class="t-year">Ongoing</p>
+                <p>Annual International FASD Day events, training workshops, conferences, website maintenance, and Facebook awareness updates continue under the <strong>WC FASD Network</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <p class="section-label">Network Members &amp; Partners</p>
+
+    <div class="members-grid" data-reveal>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>City of Cape Town</strong><br>Health Department</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Department of Social Services</strong></p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Department of Education</strong></p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Department of Health</strong><br>FAS Regional Coordinators</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>University of Stellenbosch</strong><br>Geneticist</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>University of Cape Town</strong><br>Neuro-Developmental Paediatrician</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>FARR</strong><br>Foundation for Alcohol Related Research</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Dopstop</strong><br>NGO Partner</p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Medical Research Council</strong></p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Pebbles Organization</strong></p>
+        </div>
+        <div class="member-tag">
+            <div class="member-dot"></div>
+            <p><strong>Various government departments</strong><br>and organisations across the Western Cape</p>
+        </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <p class="section-label">Achievements</p>
+
+    <div class="achievements-grid" data-reveal>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <p>A <strong>FAS training manual</strong> for health care workers, educators, school psychologists, social workers and other professionals working with people with FASD and their families.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <p><strong>Awareness posters</strong> designed and distributed creating awareness about the dangers of drinking during pregnancy.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <p><strong>FASD Conferences</strong> attended by international and local guests, the Departments of Health, Education and Social Services, NGOs and others.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <p><strong>International FASD Day</strong> — 9 September annual public awareness events bringing together communities and stakeholders.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <p><strong>Training Workshops</strong> and annual international FASD public awareness events for professionals and communities.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <p>Setting up this <strong>FASD website for South Africa</strong> to allow international contacts and local supporters to follow developments in FASD work and research.</p>
+        </div>
+        <div class="achieve-card">
+            <div class="achieve-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+            <p>Setting up the <strong>FASDSA Facebook page</strong> for regular updates, awareness campaigns, and community engagement.</p>
+        </div>
+    </div>
+
+    <!-- CURRENT NETWORK -->
+    <p class="section-label">The Network Today</p>
+
+    <div class="prose-glass" data-reveal>
+        <p>The WC FASD Network and its predecessors — the FAS reference group and the FASD Task Team — have <strong>worked collaboratively on many successful projects</strong> in recent years. The network continues to grow and adapt, always with a focus on prevention, education and support.</p>
+        <p>The WC FASD Network consists of members from the <strong>City of Cape Town</strong>, various government departments and organisations, all of whom either work in the field or have some interest in making a difference within the field of Fetal Alcohol Spectrum Disorders.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-glass" data-reveal>
+        <div>
+            <h2>Get involved or get in touch</h2>
+            <p>Whether you are a professional, caregiver, or someone interested in FASD awareness — we welcome your support and participation.</p>
+        </div>
+        <a href="contact-us.html" class="send">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</div>
+
+<footer>
+    <p>FASD Awareness &mdash; Information provided for educational purposes. Always consult a qualified healthcare professional. &nbsp;|&nbsp; <a href="contact-us.html">Contact</a></p>
+</footer>
+
+<script>
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

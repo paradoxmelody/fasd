@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supporting Someone with FASD – FASD Awareness ZA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #17304d;
+            --blue:   #1f6fbf;
+            --sky:    #4da6e8;
+            --teal:   #1a9e8f;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.12);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: #fff;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── FULL PAGE BACKGROUND ─── */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('images/images/05ea01ac-47fb-4043-ab1d-847c776d172a.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 44, 0.72);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 28, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 26px; list-style: none; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.65);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ─── PAGE HERO ─── */
+        .page-hero {
+            padding: 140px 40px 70px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-hero .eyebrow {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 16px;
+        }
+        .page-hero h1 {
+            font-family: "Lora", serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            max-width: 700px;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--sky); }
+        .page-hero p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.8;
+            max-width: 620px;
+            margin-bottom: 32px;
+        }
+
+        /* breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .8rem;
+            color: rgba(255,255,255,.45);
+            margin-bottom: 28px;
+        }
+        .breadcrumb a {
+            color: rgba(255,255,255,.45);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .breadcrumb a:hover { color: rgba(255,255,255,.85); }
+        .breadcrumb svg { width: 12px; height: 12px; }
+
+        /* ─── PAGE ─── */
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+
+        /* ─── SECTION LABEL ─── */
+        .section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ─── FEATURE ROW ─── */
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+            margin-bottom: 24px;
+        }
+        .feature-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 36px;
+            transition: background .25s, transform .25s;
+        }
+        .feature-glass:hover { background: rgba(255,255,255,.11); transform: translateY(-3px); }
+        .feature-glass h3 {
+            font-family: "Lora", serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        .feature-glass p {
+            font-size: .92rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.78;
+            margin-bottom: 16px;
+        }
+        .feature-glass strong { color: #fff; }
+
+        /* ─── FULL WIDTH GLASS ─── */
+        .full-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 40px 44px;
+            margin-bottom: 24px;
+            transition: background .25s;
+        }
+        .full-glass:hover { background: rgba(255,255,255,.10); }
+        .full-glass h3 {
+            font-family: "Lora", serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+        .full-glass p {
+            font-size: .92rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.78;
+            margin-bottom: 16px;
+        }
+        .full-glass strong { color: #fff; }
+
+        /* ─── BULLET LIST ─── */
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: .9rem;
+            color: rgba(255,255,255,.72);
+            line-height: 1.6;
+        }
+        .bullet-list li::before {
+            content: '';
+            display: block;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--teal);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        /* ─── TWO-COL BULLET GRID ─── */
+        .two-col-bullets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 32px;
+        }
+
+        /* ─── RECIPE CARD ─── */
+        .recipe-card {
+            background: rgba(77, 166, 232, 0.10);
+            border: 1px solid rgba(77, 166, 232, 0.28);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-top: 16px;
+        }
+        .recipe-card .recipe-label {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 10px;
+        }
+        .recipe-card p {
+            font-size: .9rem;
+            color: rgba(255,255,255,.8);
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+        .recipe-card strong { color: #fff; }
+
+        /* ─── HIGHLIGHT BOX ─── */
+        .highlight-box {
+            background: rgba(26, 158, 143, 0.12);
+            border: 1px solid rgba(26, 158, 143, 0.3);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-top: 14px;
+        }
+        .highlight-box p {
+            font-size: .9rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+        .highlight-box strong { color: var(--teal); }
+
+        /* ─── AUTHOR CARD ─── */
+        .author-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.14);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 36px 40px;
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+            margin-top: 8px;
+        }
+        .author-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .author-avatar svg { width: 28px; height: 28px; color: #fff; }
+        .author-card h4 {
+            font-family: "Lora", serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .author-card .author-role {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 12px;
+        }
+        .author-card p {
+            font-size: .9rem;
+            color: rgba(255,255,255,.65);
+            line-height: 1.75;
+        }
+        .author-card p em {
+            font-style: italic;
+            color: rgba(255,255,255,.5);
+            font-size: .82rem;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* ─── TAG CHIPS ─── */
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        .tag {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.7);
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .5px;
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: .95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform .25s, box-shadow .25s;
+            box-shadow: 0 6px 20px rgba(31,111,191,.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(31,111,191,.5); }
+        .btn-primary svg { width: 16px; height: 16px; }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.22);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: .95rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .2s, transform .2s;
+            backdrop-filter: blur(8px);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
+
+        /* ─── SEND BUTTON ─── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: #fff;
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 18px rgba(0,0,0,.25);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); box-shadow: 8px 8px 24px rgba(0,0,0,.32); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.5);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ─── CTA ─── */
+        .cta-glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 52px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .cta-glass h2 {
+            font-family: "Lora", serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .cta-glass p { font-size: .95rem; color: rgba(255,255,255,.65); max-width: 460px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: rgba(10,22,40,.8);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 52px 40px 28px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 36px;
+        }
+        .footer-col h4 {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 16px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: .88rem;
+            color: rgba(255,255,255,.55);
+            line-height: 1.7;
+            text-decoration: none;
+            display: block;
+        }
+        .footer-col a:hover { color: rgba(255,255,255,.9); }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            text-align: center;
+            font-size: .8rem;
+            color: rgba(255,255,255,.3);
+        }
+
+        /* ─── REVEAL ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .feature-row { grid-template-columns: 1fr; }
+            .two-col-bullets { grid-template-columns: 1fr; }
+            .author-card { flex-direction: column; }
+        }
+        @media (max-width: 700px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(15,28,50,.97);
+                border-bottom: 1px solid rgba(255,255,255,.1);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            .mobile-toggle { display: block; }
+            .page-hero { padding: 110px 24px 50px; }
+            .page { padding: 0 20px 80px; }
+            .full-glass { padding: 28px 24px; }
+            .cta-glass { padding: 36px 24px; }
+            footer { padding: 40px 24px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD Awareness <span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html">Task Team</a></li>
+            <li><a href="health-promotion.html">Health Promotion</a></li>
+            <li><a href="supporting-someone.html" class="active">Support</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero" data-reveal>
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Supporting Someone</span>
+    </div>
+    <p class="eyebrow">Caregivers · Parents · Teachers</p>
+    <h1>Living with someone with <em>FASD</em></h1>
+    <p>Practical, compassionate guidance for caring for a baby or child on the Fetal Alcohol Spectrum — from the first weeks of life through to building lasting daily routines.</p>
+    <div class="tag-row">
+        <span class="tag">Newborn Care</span>
+        <span class="tag">Behaviour & Structure</span>
+        <span class="tag">Daily Routines</span>
+        <span class="tag">Discipline Tips</span>
+        <span class="tag">Rehydration</span>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page">
+
+    <!-- BASIC CARE -->
+    <p class="section-label" data-reveal>Newborn & Baby</p>
+
+    <div class="feature-row" data-reveal>
+        <div class="feature-glass">
+            <h3>Basic Care for Your Baby</h3>
+            <p>Babies on the FASD spectrum may have many difficulties. Understand that <strong>your baby's brain works differently</strong>. Your baby could be very sensitive to touch — before holding your baby, wrap him/her snugly in a soft blanket.</p>
+            <ul class="bullet-list">
+                <li>Hold your baby for all feeds.</li>
+                <li>Use soft lighting.</li>
+                <li>Avoid loud noises — play soft, calming music.</li>
+                <li>Introduce new things like toys slowly, and only when baby is calm and ready.</li>
+                <li>He/she may take longer to sit up, crawl, walk, talk and reach other milestones.</li>
+                <li>Sucking can be difficult — try laying baby in your lap and gently holding the cheeks to keep the lips around the teat. A feeding cup or spoon can also be used.</li>
+            </ul>
+        </div>
+
+        <div class="feature-glass">
+            <h3>Jerking &amp; Sensitivity</h3>
+            <p>Jerking of the limbs when withdrawing from alcohol can be eased by <strong>stroking and wrapping tightly</strong>. At times some babies with fetal alcohol disorder don't like to be touched, as it seems as if their nerve endings are raw.</p>
+            <p>It has been found that there is usually <strong>one place that the baby likes to be touched</strong>. One baby could be soothed by placing the mother's mouth just below the baby's ear; on another, rubbing or patting the chest. Holding baby with his/her back against your side and hanging over your arm also soothes.</p>
+            <div class="highlight-box">
+                <p><strong>Tip:</strong> Giving baby a warm bath may also help ease jerking and discomfort. Observe your baby carefully to discover their unique soothing spot.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEHYDRATION -->
+    <div class="full-glass" data-reveal>
+        <h3>Dehydration — Act Quickly</h3>
+        <p>Babies that don't feed well will also <strong>dehydrate very quickly</strong>. Make sure baby gets plenty of fluids and if you are at all worried, get baby to the doctor as quickly as possible.</p>
+        <div class="recipe-card">
+            <p class="recipe-label">Recipe for Rehydration Fluid</p>
+            <p><strong>1 litre of boiled water</strong> — add <strong>8 level teaspoons of sugar</strong> and <strong>½ teaspoon of salt</strong>. Shake well and let baby drink as much as possible <strong>every 2 hours</strong> and after every dirty nappy.</p>
+        </div>
+    </div>
+
+    <!-- GENERAL TIP -->
+    <div class="full-glass" data-reveal>
+        <h3>General — Thumb Position</h3>
+        <p>If baby keeps his/her thumb tucked inside the fingers, at <strong>every opportunity</strong> place baby's thumb out flat and hold it in the open hand position on a flat surface. This gentle correction, done consistently, helps with hand development over time.</p>
+    </div>
+
+    <!-- BEHAVIOUR & STRUCTURE -->
+    <p class="section-label" style="margin-top: 56px;" data-reveal>Behaviour &amp; Structure</p>
+
+    <div class="full-glass" data-reveal>
+        <h3>Try Differently — Rather Than Expect the Child to Conform</h3>
+        <p>Children with FASD thrive on <strong>structure, consistency and patience</strong>. The goal is to adapt the environment to support the child — not to force the child to fit into environments that don't work for them.</p>
+        <div class="two-col-bullets">
+            <ul class="bullet-list">
+                <li>Daily routine — unchanging, repeat and repeat.</li>
+                <li>Firm rules, consistently enforced with consequences.</li>
+                <li>Positive attitude — reward with praise.</li>
+                <li>Avoid dangerous and frightening places.</li>
+                <li>Create a calm, well-lit environment.</li>
+                <li>Redirect behaviour rather than confront it.</li>
+                <li>Praise good behaviour and notice it actively.</li>
+                <li>Encourage and celebrate small wins.</li>
+                <li>Use short, simple sentences with one request at a time.</li>
+                <li>Encourage independence.</li>
+                <li>Give choices whenever possible.</li>
+            </ul>
+            <ul class="bullet-list">
+                <li>Help with home tasks to promote self-worth.</li>
+                <li>Assume a child may do something dangerous — use pictures (e.g. sun on hot tap, snowman on cold).</li>
+                <li>Try different approaches — children react differently to colours, lights or sounds.</li>
+                <li>Shop when stores are less busy — avoid crowds and loud music.</li>
+                <li>Use chairs and tables that are the right size for the child.</li>
+                <li>Have a calm area for the child to decompress after stress.</li>
+                <li>Lay out clothes for the next day before bedtime.</li>
+                <li>Use simple rules and the same language repeatedly.</li>
+                <li>Develop Hello and Goodbye rituals.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ROUTINES -->
+    <p class="section-label" data-reveal>Routines to Establish</p>
+
+    <div class="feature-row" data-reveal>
+        <div class="feature-glass">
+            <h3>Building Daily Routines</h3>
+            <ul class="bullet-list">
+                <li>Give child advance warning before transitions — bedtime, end of play, going home — both visually and verbally.</li>
+                <li>Insist child finishes one thing before starting the next.</li>
+                <li>Define a play area with a mat or rug.</li>
+                <li>Maintain a firm routine for all meals.</li>
+                <li>Set short, manageable tasks.</li>
+                <li>Set and enforce limits with consistent discipline.</li>
+                <li>Talk about cause and effect in simple terms.</li>
+                <li>Encourage exercise before quiet time.</li>
+            </ul>
+        </div>
+
+        <div class="feature-glass">
+            <h3>Discipline &amp; Communication</h3>
+            <ul class="bullet-list">
+                <li>Use 'time out' on a calm chair placed within sight — short, simple, immediate and calm.</li>
+                <li>Children with FASD are often tactile-defensive — create more opportunities for appropriate sensory stimulation.</li>
+                <li>Begin each sentence with your child's name.</li>
+                <li>Stress what is yours and what is mine — boundaries are important.</li>
+                <li>The child may appear to understand more than he/she actually does.</li>
+                <li>Don't debate or argue over rules — just do it calmly and consistently.</li>
+                <li>Avoid asking "Why" — substitute with "How", "What" or "Where".</li>
+                <li>Maintain eye contact through directed speech, as body language is difficult to read.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- AUTHOR -->
+    <p class="section-label" data-reveal>About the Author</p>
+
+     <div class="author-card" data-reveal>
+    <div class="author-avatar">
+        <img src="images/images/pexels-israwmx-19899320.jpg" alt="Vivien Lourens" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+    </div>
+    <div>
+        <h4>Vivien Lourens</h4>
+        <p class="author-role">FAS Information Centre (FASIC)</p>
+        <p>I am a foster mother of a little girl who has Fetal Alcohol Syndrome (FAS). When I got her, she was 10 weeks old and I was told that her future did not look very good. However, with a great deal of love and help she has amazed everyone. I have also been foster mother to other FAS babies and have written this leaflet in the hope it will help other mothers to overcome some of the problems I have come across.</p>
+        <p><em>This information is the property of Mrs V.A. Lourens and may not be reproduced without her express permission. Contact: 082 509 9530</em></p>
+    </div>
+</div>
+
+    <!-- CTA -->
+    <div class="cta-glass" data-reveal>
+        <div>
+            <h2>Need more support?</h2>
+            <p>Contact our team or locate your nearest Matrix® clinic across Cape Town. You are not alone — help is available.</p>
+        </div>
+        <a href="contact-us.html" class="send">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</div><!-- end .page -->
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p>City Health Department<br>City of Cape Town</p>
+            <p style="margin-top:10px;">Representative: Letitia Bosch</p>
+            <a href="mailto:info@fasdawareness.org" style="margin-top:8px;">info@fasdawareness.org</a>
+        </div>
+        <div class="footer-col">
+            <h4>About &amp; Team</h4>
+            <ul>
+                <li><a href="about.html">What is FASD</a></li>
+                <li><a href="task-team.html">Task Team</a></li>
+                <li><a href="health-promotion.html">Health Promotion</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="supporting-someone.html">Supporting Someone</a></li>
+                <li><a href="qa.html">Q &amp; A</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Network Partners</h4>
+            <p>FARR — Foundation for Alcohol Related Research</p>
+            <p style="margin-top:6px;">Dopstop · MRC · UCT · Stellenbosch University</p>
+            <p style="margin-top:6px;">Western Cape Department of Health</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 FASD Awareness South Africa. Information provided for educational purposes only.
+    </div>
+</footer>
+
+<script>
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

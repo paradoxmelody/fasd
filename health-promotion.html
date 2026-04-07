@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Promotion Tips – FASD Awareness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #17304d;
+            --blue:   #1f6fbf;
+            --sky:    #4da6e8;
+            --teal:   #1a9e8f;
+            --cream:  #f7f3ee;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.10);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: var(--navy);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            background: var(--bg);
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--navy);
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            font-size: .92rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--navy);
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ── FULL-PAGE BG HERO ── */
+        .page-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Background image layer — swap src in the inline style below */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/images/232ea95d-2631-4440-a4bc-b260b0bf1971.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: brightness(.55) saturate(1.1);
+            z-index: 0;
+        }
+
+        /* Gradient overlay so text reads cleanly */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(23,48,77,.15) 0%,
+                rgba(23,48,77,.05) 30%,
+                rgba(23,48,77,.65) 65%,
+                rgba(23,48,77,.92) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 120px 40px 72px;
+        }
+
+        .hero-eyebrow {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 14px;
+        }
+        .hero-content h1 {
+            font-family: "Lora", serif;
+            font-weight: 600;
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            line-height: 1.15;
+            color: #fff;
+            margin-bottom: 20px;
+            max-width: 680px;
+        }
+        .hero-content h1 em { font-style: italic; color: var(--sky); }
+        .hero-content p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,.75);
+            max-width: 560px;
+            line-height: 1.75;
+        }
+
+        /* ── SCROLL CUE ── */
+        .scroll-cue {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,.5);
+            font-size: .72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+        .scroll-cue svg { width: 20px; height: 20px; }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(6px); }
+        }
+
+        /* ── MAIN CONTENT ── */
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 72px 40px 90px;
+        }
+
+        .section-label {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: "Lora", serif;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .divider {
+            width: 44px; height: 3px;
+            background: var(--teal);
+            border-radius: 2px;
+            margin-bottom: 40px;
+        }
+
+        /* ── TIP CARDS ── */
+        .tips-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 72px;
+        }
+        .tip-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 18px var(--shadow);
+            display: grid;
+            grid-template-columns: 72px 1fr;
+            overflow: hidden;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .tip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px rgba(23,48,77,.13);
+        }
+        .tip-num {
+            background: linear-gradient(160deg, var(--blue) 0%, var(--teal) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Lora", serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: rgba(255,255,255,.9);
+            flex-shrink: 0;
+        }
+        .tip-body {
+            padding: 28px 32px;
+        }
+        .tip-tag {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+        .tip-body p {
+            font-size: 1rem;
+            color: #3a5573;
+            line-height: 1.8;
+        }
+        .tip-body strong { color: var(--navy); font-weight: 600; }
+
+        /* ── HIGHLIGHT PULL-QUOTE ── */
+        .pull-quote {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a4a75 60%, #1a7a8a 100%);
+            border-radius: 18px;
+            padding: 48px 52px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 72px;
+        }
+        .pull-quote::before {
+            content: '\201C';
+            position: absolute;
+            top: -10px; left: 28px;
+            font-family: "Lora", serif;
+            font-size: 10rem;
+            color: rgba(255,255,255,.06);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .pull-quote::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("images/images/00db3030-c4ca-47ab-80ac-e4850d0b7c5d.jpeg") center/cover no-repeat;
+            pointer-events: none;
+        }
+        .pull-quote p {
+            font-family: "Lora", serif;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-style: italic;
+            line-height: 1.7;
+            color: rgba(255,255,255,.9);
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+        }
+        .pull-quote cite {
+            display: block;
+            margin-top: 18px;
+            font-size: .82rem;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── KNOT SECTION ── */
+        .knot-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 72px;
+        }
+        .knot-text {}
+        .knot-text p {
+            font-size: .97rem;
+            color: #3a5573;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .knot-text p:last-child { margin-bottom: 0; }
+        .knot-text strong { color: var(--navy); font-weight: 600; }
+
+        .knot-symbols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .knot-sym {
+            background: var(--white);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: 0 3px 12px var(--shadow);
+            padding: 20px 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .knot-sym::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--teal));
+        }
+        .knot-sym .sym-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .knot-sym h4 {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .knot-sym p { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+        .knot-img-wrap {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px var(--shadow);
+            background: var(--cream);
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            color: var(--muted);
+            font-size: .85rem;
+        }
+        .knot-img-wrap svg { width: 40px; height: 40px; opacity: .4; }
+        .knot-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── SEND BUTTON ── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: var(--bg);
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 14px #c8d4e0, -6px -6px 14px rgba(255,255,255,.7);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 5px 5px 12px #c0ccd8, -5px -5px 12px rgba(255,255,255,.65);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ── CTA ── */
+        .cta-strip {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a4a75 100%);
+            border-radius: 16px;
+            padding: 50px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            flex-wrap: wrap;
+            color: #fff;
+        }
+        .cta-strip h2 { font-family: "Lora", serif; font-size: 1.6rem; font-weight: 600; margin-bottom: 8px; }
+        .cta-strip p  { font-size: .95rem; color: rgba(255,255,255,.7); max-width: 440px; }
+        .send-light {
+            background: #fff; color: var(--navy);
+            box-shadow: 6px 6px 14px rgba(0,0,0,.2);
+        }
+        .send-light .icon { box-shadow: 4px 4px 10px rgba(0,0,0,.12), -3px -3px 8px rgba(255,255,255,.5); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--navy);
+            color: rgba(255,255,255,.55);
+            text-align: center;
+            padding: 24px 40px;
+            font-size: .82rem;
+        }
+        footer a { color: var(--sky); text-decoration: none; }
+
+        /* ── REVEAL ── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .55s ease, transform .55s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 780px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(255,255,255,.97);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            .mobile-toggle { display: block; }
+            .hero-content { padding: 100px 24px 60px; }
+            .page { padding: 48px 20px 60px; }
+            .tip-card { grid-template-columns: 52px 1fr; }
+            .tip-num { font-size: 1.4rem; }
+            .tip-body { padding: 22px 20px; }
+            .knot-section { grid-template-columns: 1fr; }
+            .pull-quote { padding: 36px 28px; }
+            .cta-strip { padding: 36px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD Awareness <span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html">Task Team</a></li>
+            <li><a href="health-promotion.html" class="active">Health Promotion</a></li>
+            <li><a href="supporting-someone.html">Support</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<!-- background image-- -->
+<section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">F.A.S.D — Prevention &amp; Awareness</p>
+        <h1>Health Promoting <em>Tips</em></h1>
+        <p>Practical, evidence-based guidance on protecting your baby from alcohol-related harm before and during pregnancy.</p>
+    </div>
+    <div class="scroll-cue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        Scroll
+    </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="page">
+
+    <!-- TIPS -->
+    <section data-reveal>
+        <p class="section-label">Key Messages</p>
+        <h2 class="section-title">What You Need to Know</h2>
+        <div class="divider"></div>
+
+        <div class="tips-stack">
+            <div class="tip-card">
+                <div class="tip-num">1</div>
+                <div class="tip-body">
+                    <p class="tip-tag">Alcohol &amp; Tobacco</p>
+                    <p>The combination of <strong>drinking alcohol and smoking tobacco</strong> is even more harmful for the developing fetus than consuming alcohol alone. The combined effect amplifies damage to the baby's developing brain and body.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">2</div>
+                <div class="tip-body">
+                    <p class="tip-tag">Prevention</p>
+                    <p><strong>Alcohol harms unborn babies.</strong> Such babies will need special care all their lives because they could suffer from physical defects, abnormal facial anomalies and be mentally challenged. <strong>Do not fall pregnant if you drink alcohol.</strong> Use contraceptives correctly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PULL QUOTE -->
+    <div class="pull-quote" data-reveal>
+        <p>There is no known safe amount of alcohol during pregnancy. There is no safe time to drink alcohol during pregnancy. There is no safe type of alcohol during pregnancy.</p>
+        <cite>— FASD Awareness</cite>
+    </div>
+
+    <!-- FASD KNOT -->
+    <section data-reveal>
+        <p class="section-label">Symbol of Awareness</p>
+        <h2 class="section-title">The FASD Knot</h2>
+        <div class="divider"></div>
+
+        <div class="knot-section">
+            <div class="knot-text">
+                <p>The knot is made of <strong>white cord</strong> and is tied in a reef knot. The original FAS knot was designed by <strong>Bonnie Buxton and Brian Philcox</strong> of Canada as a symbol of awareness, solidarity, and the lasting impact of prenatal alcohol exposure.</p>
+                <p>The reef knot cannot be broken or snapped — the more you pull, the tighter the bond — representing the unbreakable responsibility we all share in protecting unborn children.</p>
+                <p>The <strong>frayed ends</strong> represent the damaged nervous system which, unlike the knot itself, cannot be repaired — a powerful reminder of the permanent nature of FASD.</p>
+
+                <div class="knot-symbols" style="margin-top:28px;">
+                    <div class="knot-sym">
+                        <span class="sym-icon">○</span>
+                        <h4>The Circle</h4>
+                        <p>Symbolises the womb, the baby's head, the human brain, and the world.</p>
+                    </div>
+                    <div class="knot-sym">
+                        <span class="sym-icon">〰</span>
+                        <h4>The Cord</h4>
+                        <p>Represents the umbilical cord and the bond that joins us all together in caring.</p>
+                    </div>
+                    <div class="knot-sym">
+                        <span class="sym-icon">✕</span>
+                        <h4>The Reef Knot</h4>
+                        <p>Cannot be broken or snapped — the more you pull, the tighter the bond becomes.</p>
+                    </div>
+                    <div class="knot-sym">
+                        <span class="sym-icon">∿</span>
+                        <h4>The Frayed Ends</h4>
+                        <p>Represent the damaged nervous system which cannot be repaired.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- knot image -->
+            <div class="knot-img-wrap">
+        
+                <img src="images/images/44dbe08b-6ea7-4e26-ba0c-3873524881bc.png" alt="FASD Knot" style="display:block;">
+            </div>
+             
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-strip" data-reveal>
+        <div>
+            <h2>Need support or more information?</h2>
+            <p>Find your nearest Matrix® clinic or learn more about how FASD affects development and what you can do.</p>
+        </div>
+        <a href="contact-us.html" class="send send-light">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <p>FASD Awareness &mdash; Information provided for educational purposes. Always consult a qualified healthcare professional. &nbsp;|&nbsp; <a href="contact-us.html">Contact</a></p>
+</footer>
+
+<script>
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

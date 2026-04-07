@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q &amp; A – FASD Awareness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #17304d;
+            --blue:   #1f6fbf;
+            --sky:    #4da6e8;
+            --teal:   #1a9e8f;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.12);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: var(--navy);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── FULL PAGE BACKGROUND ─── */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('images/images/a9007a75-201e-4c36-ad51-4ae647c3d7d1.png');  
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        /* dark tint so content stays readable */
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 30, 50, 0.72);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 28, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 26px; list-style: none; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.65);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ─── PAGE WRAPPER ─── */
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 130px 40px 100px;
+        }
+
+        /* ─── HERO TEXT ─── */
+        .page-hero {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .eyebrow {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 14px;
+        }
+        .page-hero h1 {
+            font-family: "Lora", serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--sky); }
+        .page-hero p {
+            font-size: 1.02rem;
+            color: rgba(255,255,255,.65);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
+
+        /* ─── GLASSMORPHISM CARD ─── */
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 36px 40px;
+            margin-bottom: 20px;
+            transition: background .25s, transform .25s;
+        }
+        .glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* question header */
+        .q-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+            cursor: pointer;
+        }
+        .q-badge {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .q-badge svg { width: 16px; height: 16px; color: #fff; }
+        .q-header h3 {
+            font-family: "Lora", serif;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.4;
+            flex: 1;
+        }
+        .q-toggle {
+            color: rgba(255,255,255,.45);
+            transition: transform .3s, color .2s;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        .glass.open .q-toggle { transform: rotate(180deg); color: var(--sky); }
+
+        /* answer body */
+        .q-body {
+            display: none;
+            padding-left: 50px;
+        }
+        .glass.open .q-body { display: block; }
+        .q-body p {
+            font-size: .95rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.82;
+            margin-bottom: 10px;
+        }
+        .q-body p:last-child { margin-bottom: 0; }
+        .q-body strong { color: #fff; font-weight: 600; }
+
+        /* bullet list inside answer */
+        .q-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .q-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: .95rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.7;
+        }
+        .q-list li::before {
+            content: '';
+            display: block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--teal);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        /* ─── SECTION DIVIDER LABEL ─── */
+        .section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin: 52px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ─── SEND BUTTON ─── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: #fff;
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 18px rgba(0,0,0,.25), -2px -2px 8px rgba(255,255,255,.08);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); box-shadow: 8px 8px 24px rgba(0,0,0,.32); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.5);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ─── CTA ─── */
+        .cta-glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 48px 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-top: 56px;
+        }
+        .cta-glass h2 {
+            font-family: "Lora", serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .cta-glass p { font-size: .93rem; color: rgba(255,255,255,.65); max-width: 400px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: rgba(10, 22, 40, 0.75);
+            backdrop-filter: blur(12px);
+            color: rgba(255,255,255,.45);
+            text-align: center;
+            padding: 22px 40px;
+            font-size: .82rem;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        footer a { color: var(--sky); text-decoration: none; }
+
+        /* ─── REVEAL ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 700px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(15,28,50,.96);
+                border-bottom: 1px solid rgba(255,255,255,.1);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            .mobile-toggle { display: block; }
+            .page { padding: 110px 20px 80px; }
+            .glass { padding: 24px 22px; }
+            .q-body { padding-left: 0; }
+            .cta-glass { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- FULL PAGE BACKGROUND -->
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD Awareness <span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html">Task Team</a></li>
+            <li><a href="health-promotion.html">Health Promotion</a></li>
+            <li><a href="supporting-someone.html">Support</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- HERO TEXT -->
+    <div class="page-hero" data-reveal>
+        <p class="eyebrow">F.A.S.D — Frequently Asked Questions</p>
+        <h1>Questions <em>&amp; Answers</em></h1>
+        <p>Everything you need to know about Fetal Alcohol Spectrum Disorders — prevention, harm, and what to do next.</p>
+    </div>
+
+    <!-- Q&A GROUP 1: BASICS -->
+    <p class="section-label">Understanding FASD</p>
+
+    <div class="glass open" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3>What is FASD?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>Fetal Alcohol Spectrum Disorders (FASD) is a group of conditions that occur when an unborn baby is exposed to <strong>any amount of alcohol</strong> before birth.</p>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>How is FASD prevented?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <ul class="q-list">
+                <li>FASD is prevented if the mother does <strong>not drink any alcohol</strong> during pregnancy.</li>
+                <li><strong>FASD is 100% preventable.</strong> No alcohol for mom during pregnancy equals no FASD for baby.</li>
+                <li><strong>FASD is 100% permanent.</strong> The damage done by alcohol cannot be undone.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <h3>How does alcohol harm the unborn baby?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>When a pregnant woman drinks alcohol, it goes into her bloodstream. The blood takes the alcohol to the unborn baby. Alcohol <strong>damages the unborn baby's growing body and brain</strong>, resulting in many types of birth defects.</p>
+            <p>Alcohol harms an unborn baby in different ways at different times during the pregnancy.</p>
+        </div>
+    </div>
+
+    <!-- Q&A GROUP 2: DURING PREGNANCY -->
+    <p class="section-label">During Pregnancy</p>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3>Will it make a difference if a pregnant woman stops drinking at any point during pregnancy?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <ul class="q-list">
+                <li>It is best to stop drinking alcohol <strong>when you are planning to have a baby</strong>.</li>
+                <li>Alcohol harms an unborn baby in different ways, at different times during the pregnancy.</li>
+                <li>If you stop drinking alcohol at any stage, it will <strong>stop further damage</strong> to the unborn baby.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.024-4.69 3 3 0 0 1 .217-5.93 2.5 2.5 0 0 1 3.307-3.42z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.024-4.69 3 3 0 0 0-.217-5.93 2.5 2.5 0 0 0-3.307-3.42z"/></svg>
+            </div>
+            <h3>Will the baby get FASD if the mother does not drink alcohol?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>The baby will <strong>not get FASD</strong> if the mother does not drink alcohol.</p>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3>Will alcohol harm the baby?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <ul class="q-list">
+                <li><strong>No amount of alcohol is safe</strong> for the unborn baby.</li>
+                <li>Alcohol can cause damage to the unborn baby even <strong>before a woman knows she is pregnant</strong>.</li>
+                <li>Alcohol can continue harming the baby until the baby is born.</li>
+                <li>It is <strong>never too late to stop drinking</strong> during pregnancy.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Q&A GROUP 3: BREASTFEEDING & TYPES -->
+    <p class="section-label">Breastfeeding &amp; Alcohol Types</p>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            </div>
+            <h3>Will the baby be affected if the mother drinks alcohol while breastfeeding?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <ul class="q-list">
+                <li>Alcohol the mother drinks is carried <strong>through the breast milk</strong> to the baby. Breast milk can smell and taste of alcohol — babies may stop breastfeeding because they dislike the taste, meaning the baby may not grow as it should.</li>
+                <li><strong>Do not drink alcohol</strong> if you are breastfeeding your baby or feeding your baby breast milk.</li>
+                <li>Drinking alcohol when breastfeeding can harm the baby's <strong>brain, sleep, learning, development and growth</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+            <h3>Can all types of alcohol harm the baby?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>Yes — <strong>any and all types of alcohol</strong> can cause birth defects.</p>
+            <p>Beer, wine, ciders, spirits, alcoholic spirit coolers, shandy, milk stout, vodka, gin, brandy, whisky, sherry — <strong>all types of alcohol can do harm.</strong></p>
+        </div>
+    </div>
+
+    <!-- Q&A GROUP 4: DIAGNOSIS & SUPPORT -->
+    <p class="section-label">Diagnosis &amp; Support</p>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3>Where do you go if you are worried your baby or child has FASD?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>Go to your <strong>nearest clinic</strong> and ask that your child be tested.</p>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Who can say if a child has FASD?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <p>Only a <strong>specially trained doctor</strong>, using sophisticated tests, can determine if a child has FASD.</p>
+        </div>
+    </div>
+
+    <div class="glass" data-reveal>
+        <div class="q-header" onclick="toggleQ(this)">
+            <div class="q-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>What is the role of the man when his partner is pregnant?</h3>
+            <svg class="q-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="q-body">
+            <ul class="q-list">
+                <li>Encourage her <strong>not to drink alcohol</strong>.</li>
+                <li>Encourage her to go for help if she <strong>cannot stop drinking</strong>.</li>
+                <li>Respect her wish when she decides <strong>not to drink</strong>.</li>
+                <li>Help the pregnant woman enjoy <strong>alcohol-free activities</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-glass" data-reveal>
+        <div>
+            <h2>Still have questions?</h2>
+            <p>Reach out to our team or find your nearest Matrix® clinic for in-person support and guidance.</p>
+        </div>
+        <a href="contact-us.html" class="send">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</div><!-- end .page -->
+
+<footer>
+    <p>FASD Awareness &mdash; Information provided for educational purposes. Always consult a qualified healthcare professional. &nbsp;|&nbsp; <a href="contact-us.html">Contact</a></p>
+</footer>
+
+<script>
+    // Accordion toggle
+    function toggleQ(header) {
+        const card = header.parentElement;
+        card.classList.toggle('open');
+    }
+
+    // Mobile nav
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

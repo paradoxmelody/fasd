@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supporting Someone with FASD – FASD Awareness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #17304d;
+            --blue:   #1f6fbf;
+            --sky:    #4da6e8;
+            --teal:   #1a9e8f;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.12);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: var(--navy);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── FULL PAGE BACKGROUND ─── */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('images/images/923b965a-6f62-4088-8038-253a4b843785.png'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(12, 26, 44, 0.75);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 28, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 26px; list-style: none; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.65);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ─── PAGE WRAPPER ─── */
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 130px 40px 100px;
+        }
+
+        /* ─── HERO TEXT ─── */
+        .page-hero {
+            margin-bottom: 64px;
+        }
+        .eyebrow {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 14px;
+        }
+        .page-hero h1 {
+            font-family: "Lora", serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            max-width: 700px;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--sky); }
+        .page-hero p {
+            font-size: 1.02rem;
+            color: rgba(255,255,255,.65);
+            max-width: 580px;
+            line-height: 1.75;
+        }
+
+        /* ─── SECTION LABEL ─── */
+        .section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin: 56px 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ─── GLASS CARD BASE ─── */
+        .glass {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.13);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 36px 40px;
+        }
+
+        /* ─── AGE STAGE GRID ─── */
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .stage-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: background .25s, transform .25s;
+        }
+        .stage-card:hover {
+            background: rgba(255,255,255,.12);
+            transform: translateY(-3px);
+        }
+        .stage-header {
+            padding: 20px 24px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .stage-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .stage-icon svg { width: 20px; height: 20px; color: #fff; }
+        .stage-header h3 {
+            font-family: "Lora", serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .stage-header .age-tag {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-top: 2px;
+        }
+        .stage-body { padding: 20px 24px 24px; }
+        .stage-body h4 {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.4);
+            margin-bottom: 10px;
+        }
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: .88rem;
+            color: rgba(255,255,255,.75);
+            line-height: 1.6;
+        }
+        .bullet-list li::before {
+            content: '';
+            display: block;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--teal);
+            flex-shrink: 0;
+            margin-top: 7px;
+        }
+        .bullet-list li.sub {
+            padding-left: 14px;
+            font-size: .83rem;
+            color: rgba(255,255,255,.55);
+        }
+        .bullet-list li.sub::before { background: var(--sky); width: 4px; height: 4px; }
+
+        /* ─── PROSE GLASS ─── */
+        .prose-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.11);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 18px;
+            padding: 32px 36px;
+            margin-bottom: 20px;
+        }
+        .prose-glass p {
+            font-size: .96rem;
+            color: rgba(255,255,255,.75);
+            line-height: 1.82;
+            margin-bottom: 14px;
+        }
+        .prose-glass p:last-child { margin-bottom: 0; }
+        .prose-glass strong { color: #fff; font-weight: 600; }
+
+        /* ─── TOP TIPS ─── */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .tip-item {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.11);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: background .2s, transform .2s;
+        }
+        .tip-item:hover {
+            background: rgba(255,255,255,.12);
+            transform: translateY(-2px);
+        }
+        .tip-num {
+            width: 30px; height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            font-size: .75rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .tip-item p {
+            font-size: .9rem;
+            color: rgba(255,255,255,.78);
+            line-height: 1.65;
+        }
+        .tip-item p strong { color: #fff; }
+
+        /* ─── SEND BUTTON ─── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: #fff;
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 18px rgba(0,0,0,.25);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); box-shadow: 8px 8px 24px rgba(0,0,0,.32); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.5);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ─── CTA ─── */
+        .cta-glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 48px 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-top: 56px;
+        }
+        .cta-glass h2 {
+            font-family: "Lora", serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .cta-glass p { font-size: .93rem; color: rgba(255,255,255,.65); max-width: 400px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: rgba(10, 22, 40, 0.75);
+            backdrop-filter: blur(12px);
+            color: rgba(255,255,255,.45);
+            text-align: center;
+            padding: 22px 40px;
+            font-size: .82rem;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        footer a { color: var(--sky); text-decoration: none; }
+
+        /* ─── REVEAL ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 700px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(15,28,50,.96);
+                border-bottom: 1px solid rgba(255,255,255,.1);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            .mobile-toggle { display: block; }
+            .page { padding: 110px 20px 80px; }
+            .glass { padding: 24px 22px; }
+            .prose-glass { padding: 24px 22px; }
+            .cta-glass { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- FULL PAGE BACKGROUND -->
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD Awareness <span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html">Task Team</a></li>
+            <li><a href="health-promotion.html">Health Promotion</a></li>
+            <li><a href="supporting-someone.html" class="active">Support</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- HERO -->
+    <div class="page-hero" data-reveal>
+        <p class="eyebrow">F.A.S.D — Guidance for Families &amp; Educators</p>
+        <h1>Supporting Someone<br>with <em>FASD</em></h1>
+        <p>Practical tips and developmental guidance for parents, caregivers and teachers supporting a child or adult living with Fetal Alcohol Spectrum Disorders.</p>
+    </div>
+
+    <!-- DEVELOPMENTAL STAGES -->
+    <p class="section-label">Developmental Stages &amp; Challenges</p>
+
+    <div class="stage-grid" data-reveal>
+
+        <!-- Baby -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">Newborn</p>
+                    <h3>Baby / Small Child</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Neurological &amp; Behaviour</h4>
+                <ul class="bullet-list">
+                    <li>Irritable and cries a lot</li>
+                    <li>Sleeps poorly</li>
+                    <li>Slow motor development</li>
+                    <li>Slow development of speech and language</li>
+                    <li>Feeding problems</li>
+                </ul>
+                <h4 style="margin-top:18px;">Growth</h4>
+                <ul class="bullet-list">
+                    <li>Low birth weight</li>
+                    <li>Overall small with poor growth potential — under 10th percentile</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Toddler -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">Early Years</p>
+                    <h3>Toddlers / Pre-School</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Neurological &amp; Behaviour</h4>
+                <ul class="bullet-list">
+                    <li>Slow overall development</li>
+                    <li>Slow development of speech</li>
+                    <li>Slow motor development</li>
+                    <li>Coordination problems</li>
+                    <li>Hyperactivity</li>
+                    <li>Sleeping problems</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6-12 -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">School Age</p>
+                    <h3>Children 6 – 12 Years</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Neurological &amp; Behavioural</h4>
+                <ul class="bullet-list">
+                    <li>Hyperactivity</li>
+                    <li>Attention and concentration problems</li>
+                    <li>Sleeping problems</li>
+                    <li>Emotional and psychiatric problems</li>
+                    <li class="sub">Low self-esteem</li>
+                    <li>Psycho-social problems</li>
+                    <li class="sub">Impulsivity</li>
+                    <li class="sub">Fearless behaviour</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Adolescents -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">Teen Years</p>
+                    <h3>Adolescents</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Neurological &amp; Behavioural</h4>
+                <ul class="bullet-list">
+                    <li>Hyperactivity</li>
+                    <li>Concentration and learning problems</li>
+                    <li>Emotional and psychological problems</li>
+                    <li>Poor social skills leading to high-risk behaviour</li>
+                    <li class="sub">Lying, theft, drug abuse</li>
+                    <li>Behaviour problems</li>
+                    <li>Problems with complex problem solving and memory</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Adults -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">Lifelong</p>
+                    <h3>Adults</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Lifelong Challenges</h4>
+                <ul class="bullet-list">
+                    <li>Attention and concentration problems</li>
+                    <li>Leaves school early</li>
+                    <li>Dependent on others</li>
+                    <li>Problems getting and keeping jobs</li>
+                    <li>Psychiatric problems</li>
+                    <li>Poor social functioning</li>
+                    <li>Risk of criminal behaviour</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- General -->
+        <div class="stage-card">
+            <div class="stage-header">
+                <div class="stage-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                    <p class="age-tag">All Ages</p>
+                    <h3>General Challenges</h3>
+                </div>
+            </div>
+            <div class="stage-body">
+                <h4>Common Difficulties</h4>
+                <ul class="bullet-list">
+                    <li>Difficulty understanding abstract concepts (e.g. time)</li>
+                    <li>Problems with motivation</li>
+                    <li>Problems with social adaptation</li>
+                    <li>Difficulty understanding cause and effect</li>
+                    <li>Problems applying information across situations</li>
+                    <li>Impulsivity</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- IN THE CLASSROOM -->
+    <p class="section-label">In the Classroom</p>
+
+    <div data-reveal>
+        <div class="prose-glass">
+            <p>Children with FASD are often perceived as difficult within the class, as they have behaviours which can be disruptive and need handling with care and attention. Teachers can feel they are failing because these children <strong>do not learn at the same pace</strong> as the rest of the class and cannot conform to standard expectations of behaviour and social participation.</p>
+            <p>As many children affected by FASD do not have visible physical symptoms, it is often hard to identify that a disability exists — they are seen as non-conformist rather than having <strong>special needs</strong>.</p>
+        </div>
+
+        <div class="prose-glass">
+            <p>Children with FASD need a learning environment that provides <strong>structure, stability, routine and minimal distractions</strong>. They need to be encouraged to remain on task for longer periods and supported in difficult work, otherwise they tend to switch off, become disaffected and cause disruptions.</p>
+            <p>A <strong>multi-sensory approach</strong> is essential — the same information needs to be presented in a variety of ways. Teach <strong>one concept at a time</strong> and give information in small pieces. Check for understanding before moving on, and always consider the child's <strong>developmental age</strong> rather than their chronological age.</p>
+            <p>Children with FASD respond well to <strong>visual clues</strong> — visual timetables, labels, pictorial representations, and practical examples. They can be inconsistent learners, showing understanding one day but unable to recall it the next. They need plentiful opportunities to <strong>over-learn</strong> — repeating the same material many times.</p>
+            <p>All staff and family members need to work together to keep routines <strong>predictable and consistent</strong>, particularly when handling challenging behaviour.</p>
+        </div>
+    </div>
+
+    <!-- TOP TIPS -->
+    <p class="section-label">Top Tips for Caregivers &amp; Teachers</p>
+
+    <div class="tips-grid" data-reveal>
+        <div class="tip-item">
+            <div class="tip-num">1</div>
+            <p><strong>Look for the child's strengths</strong> and build on them.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">2</div>
+            <p><strong>Take time out</strong> when you feel you are losing patience.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">3</div>
+            <p>Have <strong>immediate little rewards</strong> for good behaviour.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">4</div>
+            <p><strong>Reward tiny steps</strong> in the right direction rather than waiting for a major achievement.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">5</div>
+            <p>Try to <strong>ignore mistakes</strong> and focus on progress.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">6</div>
+            <p>Be <strong>clear about boundaries</strong> and consequences of poor behaviour.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">7</div>
+            <p>Understand there will be <strong>periods of no visible progress</strong> — this is normal.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">8</div>
+            <p>Have <strong>diversion tactics</strong> ready to avoid confrontations in public.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">9</div>
+            <p><strong>Verbally praise</strong> the child when they behave responsibly — and explain why you are pleased.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">10</div>
+            <p><strong>Talk through difficult behaviours</strong> — explain why it is not acceptable and offer suggestions.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">11</div>
+            <p>Maintain a <strong>clear routine and structure</strong> so the child can predict what is expected.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">12</div>
+            <p>Use <strong>visual clues</strong> as much as possible — timetables, pictures, drawings.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">13</div>
+            <p>Use something <strong>concrete to teach turn-taking</strong> — a card, shell, or ball to hold when it is their turn.</p>
+        </div>
+        <div class="tip-item">
+            <div class="tip-num">14</div>
+            <p><strong>Take time out for yourself</strong> to recharge your batteries.</p>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-glass" data-reveal>
+        <div>
+            <h2>Need more support?</h2>
+            <p>Contact our team or visit your nearest clinic to access professional guidance and FASD resources.</p>
+        </div>
+        <a href="contact-us.html" class="send">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</div><!-- end .page -->
+
+<footer>
+    <p>FASD Awareness &mdash; Information provided for educational purposes. Always consult a qualified healthcare professional. &nbsp;|&nbsp; <a href="contact-us.html">Contact</a></p>
+</footer>
+
+<script>
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

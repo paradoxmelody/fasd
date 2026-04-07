@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FASD Awareness – Fetal Alcohol Spectrum Disorders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:   #df8715;
+            --blue:   #f3c910;
+            --sky:    #d4770d;
+            --teal:   #d67f0d;
+            --white:  #ffffff;
+            --muted:  #5d7a96;
+            --border: #dce8f5;
+            --shadow: rgba(23,48,77,.12);
+            --bg:     #f0f4f9;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Google Sans", sans-serif;
+            font-optical-sizing: auto;
+            color: #fff;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── FULL PAGE BACKGROUND ─── */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('images/images/232ea95d-2631-4440-a4bc-b260b0bf1971.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 44, 0.72);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 28, 50, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            padding: 0 40px;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-brand span {
+            background: var(--blue);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .nav-links { display: flex; gap: 26px; list-style: none; align-items: center; }
+        .nav-links > li { position: relative; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.65);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* ─── DROPDOWN ─── */
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .dropdown-toggle svg {
+            width: 12px; height: 12px;
+            transition: transform .25s;
+            flex-shrink: 0;
+        }
+        .dropdown:hover .dropdown-toggle svg { transform: rotate(180deg); }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 14px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(12, 24, 46, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 14px;
+            padding: 8px;
+            min-width: 210px;
+            list-style: none;
+            z-index: 200;
+            box-shadow: 0 16px 40px rgba(0,0,0,.4);
+        }
+        /* little arrow pointer */
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px; height: 10px;
+            background: rgba(12, 24, 46, 0.97);
+            border-left: 1px solid rgba(255,255,255,.13);
+            border-top: 1px solid rgba(255,255,255,.13);
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: .88rem;
+            color: rgba(255,255,255,.7);
+            white-space: nowrap;
+            transition: background .18s, color .18s;
+        }
+        .dropdown-menu li a:hover {
+            background: rgba(255,255,255,.09);
+            color: #fff;
+        }
+
+        /* ─── MOBILE TOGGLE ─── */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .mobile-toggle.active .hamburger span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        .mobile-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 40px 80px;
+        }
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .hero-text .eyebrow {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 16px;
+        }
+        .hero-text h1 {
+            font-family: "Lora", serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.13;
+            margin-bottom: 22px;
+        }
+        .hero-text h1 em { font-style: italic; color: var(--sky); }
+        .hero-text p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.8;
+            margin-bottom: 36px;
+            max-width: 480px;
+        }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: .95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform .25s, box-shadow .25s;
+            box-shadow: 0 6px 20px rgba(31,111,191,.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(31,111,191,.5); }
+        .btn-primary svg { width: 16px; height: 16px; }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.22);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: .95rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .2s, transform .2s;
+            backdrop-filter: blur(8px);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.13);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            padding: 24px 22px;
+            transition: background .2s, transform .2s;
+        }
+        .stat-card:hover { background: rgba(255,255,255,.13); transform: translateY(-3px); }
+        .stat-card .num {
+            font-family: "Lora", serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sky);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-card p { font-size: .82rem; color: rgba(255,255,255,.6); line-height: 1.5; }
+
+        .scroll-cue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,.4);
+            font-size: .7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 60px;
+            animation: bounce 2.2s infinite;
+        }
+        .scroll-cue svg { width: 20px; height: 20px; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(6px); }
+        }
+
+        /* ─── PAGE ─── */
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px 100px;
+        }
+
+        .section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.12);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            transition: background .25s, transform .25s, box-shadow .25s;
+        }
+        .nav-card:hover {
+            background: rgba(255,255,255,.13);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,.25);
+        }
+        .nav-card-top {
+            padding: 28px 28px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .card-icon {
+            width: 46px; height: 46px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .card-icon svg { width: 22px; height: 22px; color: #fff; }
+        .card-label {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 4px;
+        }
+        .nav-card h3 {
+            font-family: "Lora", serif;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.35;
+        }
+        .nav-card-body { padding: 0 28px 24px; }
+        .nav-card-body p {
+            font-size: .88rem;
+            color: rgba(255,255,255,.65);
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+        .card-link {
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--sky);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .card-link svg { width: 13px; height: 13px; transition: transform .2s; }
+        .nav-card:hover .card-link svg { transform: translateX(3px); }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+            margin-bottom: 20px;
+        }
+        .feature-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 36px;
+            transition: background .25s, transform .25s;
+        }
+        .feature-glass:hover { background: rgba(255,255,255,.11); transform: translateY(-3px); }
+        .feature-glass h3 {
+            font-family: "Lora", serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        .feature-glass p {
+            font-size: .92rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.78;
+            margin-bottom: 22px;
+        }
+        .feature-glass strong { color: #fff; }
+
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: .9rem;
+            color: rgba(255,255,255,.72);
+            line-height: 1.6;
+        }
+        .bullet-list li::before {
+            content: '';
+            display: block;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--teal);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        /* ─── SEND BUTTON ─── */
+        .send {
+            display: inline-flex;
+            align-items: center;
+            color: var(--navy);
+            background: #fff;
+            border: none;
+            font-family: "Google Sans", sans-serif;
+            padding: 0;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform .3s, box-shadow .3s;
+            box-shadow: 6px 6px 18px rgba(0,0,0,.25);
+            text-decoration: none;
+        }
+        .send:hover { transform: translateY(-2px); box-shadow: 8px 8px 24px rgba(0,0,0,.32); }
+        .send:hover .icon svg { transform: translate(-4px, 4px); }
+        .send .text { height: 3.4rem; padding: .8rem 1rem .8rem 1.6rem; display: flex; align-items: center; }
+        .send .icon {
+            display: flex; padding: .8rem;
+            box-shadow: 4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.5);
+            border-radius: 50%; width: 3.4rem; height: 3.4rem;
+            justify-content: center; align-items: center;
+        }
+        .send svg { fill: currentColor; width: 1.2rem; height: 1.2rem; transition: transform .3s ease-out; }
+
+        /* ─── CTA ─── */
+        .cta-glass {
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 52px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .cta-glass h2 {
+            font-family: "Lora", serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .cta-glass p { font-size: .95rem; color: rgba(255,255,255,.65); max-width: 460px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: rgba(10,22,40,.8);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 52px 40px 28px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 36px;
+        }
+        .footer-col h4 {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 16px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: .88rem;
+            color: rgba(255,255,255,.55);
+            line-height: 1.7;
+            text-decoration: none;
+            display: block;
+        }
+        .footer-col a:hover { color: rgba(255,255,255,.9); }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            text-align: center;
+            font-size: .8rem;
+            color: rgba(255,255,255,.3);
+        }
+
+        /* ─── REVEAL ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        [data-reveal].visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+            .hero-stats { grid-template-columns: 1fr 1fr; }
+            .feature-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 700px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 64px; left: 0; right: 0;
+                background: rgba(15,28,50,.97);
+                border-bottom: 1px solid rgba(255,255,255,.1);
+                padding: 16px 24px 24px;
+                gap: 14px;
+                z-index: 99;
+            }
+            /* mobile dropdown just shows both links inline */
+            .nav-links.open .dropdown-menu {
+                display: block;
+                position: static;
+                transform: none;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 4px 0 0 14px;
+                min-width: unset;
+            }
+            .nav-links.open .dropdown-menu::before { display: none; }
+            .nav-links.open .dropdown-menu li a {
+                padding: 6px 0;
+                font-size: .88rem;
+            }
+            .mobile-toggle { display: block; }
+            .hero { padding: 100px 24px 60px; min-height: auto; }
+            .page { padding: 60px 20px 80px; }
+            .cta-glass { padding: 36px 24px; }
+            footer { padding: 40px 24px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a class="nav-brand" href="index.html">FASD<span>ZA</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">What is FASD</a></li>
+            <li><a href="task-team.html">Task Team</a></li>
+            <li><a href="health-promotion.html">Health Promotion</a></li>
+            <li><a href="q-and-a.html">Q &amp; A</a></li>
+
+            <!-- SUPPORT DROPDOWN -->
+            <li class="dropdown">
+                <a class="dropdown-toggle">
+                    Support
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="supporting-someone.html">Supporting Someone</a></li>
+                    <li><a href="living-with-child.html">Living with a Child</a></li>
+                </ul>
+            </li>
+
+            <li><a href="contact-us.html">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text" data-reveal>
+            <p class="eyebrow">F.A.S.D — Fetal Alcohol Spectrum Disorders</p>
+            <h1>Prevention starts with <em>knowledge.</em></h1>
+            <p>FASD is 100% preventable and 100% permanent. No alcohol during pregnancy is the only way to ensure your baby is not affected. Learn, share, and support.</p>
+            <div class="hero-actions">
+                <a href="about.html" class="btn-primary">
+                    What is FASD
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+                <a href="contact-us.html" class="btn-ghost">Find a Clinic</a>
+            </div>
+            <div class="scroll-cue" style="align-items:flex-start; margin-top:48px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                Scroll to explore
+            </div>
+        </div>
+
+        <div class="hero-stats" data-reveal>
+            <div class="stat-card">
+                <div class="num">100%</div>
+                <p>Preventable — no alcohol during pregnancy equals no FASD</p>
+            </div>
+            <div class="stat-card">
+                <div class="num">100%</div>
+                <p>Permanent — damage caused by alcohol cannot be undone</p>
+            </div>
+            <div class="stat-card">
+                <div class="num">2001</div>
+                <p>Year the WC FASD Network was established in the Western Cape</p>
+            </div>
+            <div class="stat-card">
+                <div class="num">9 Sep</div>
+                <p>International FASD Awareness Day — marked annually</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="page">
+
+    <p class="section-label" data-reveal>Explore the Site</p>
+
+    <div class="cards-grid" data-reveal>
+
+        <a href="about.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.024-4.69 3 3 0 0 1 .217-5.93 2.5 2.5 0 0 1 3.307-3.42z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.024-4.69 3 3 0 0 0-.217-5.93 2.5 2.5 0 0 0-3.307-3.42z"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">About / Team</p>
+                    <h3>What is FASD?</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Understand what Fetal Alcohol Spectrum Disorders are, how alcohol affects the developing brain, and the stages of fetal development.</p>
+                <span class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+        <a href="task-team.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">The Network</p>
+                    <h3>WC FASD Task Team</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Meet the Western Cape FASD Network — a collaboration of government, NGOs and researchers working to prevent FASD since 2001.</p>
+                <span class="card-link">Meet the team <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+        <a href="health-promotion.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">Events / Tips</p>
+                    <h3>Health Promotion</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Practical health tips, the FASD Knot symbol of awareness, and guidance on preventing alcohol exposure during pregnancy.</p>
+                <span class="card-link">View tips <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+        <a href="supporting-someone.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">Support</p>
+                    <h3>Supporting Someone</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Guidance for parents, caregivers and teachers — from newborn through to adulthood — with practical top tips for daily support.</p>
+                <span class="card-link">Get guidance <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+        <a href="qa.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">Support / Contact</p>
+                    <h3>Q &amp; A</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Answers to the most common questions about FASD — from prevention and diagnosis to breastfeeding and the role of partners.</p>
+                <span class="card-link">Read the Q&amp;A <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+        <a href="contact-us.html" class="nav-card">
+            <div class="nav-card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                    <p class="card-label">Contact</p>
+                    <h3>Find a Clinic</h3>
+                </div>
+            </div>
+            <div class="nav-card-body">
+                <p>Locate the nearest Matrix® clinic in Cape Town, get contact numbers, and learn about available outpatient treatment services.</p>
+                <span class="card-link">Find a clinic <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+        </a>
+
+    </div>
+
+    <p class="section-label" style="margin-top:56px;" data-reveal>Key Information</p>
+
+    <div class="feature-row" data-reveal>
+        <div class="feature-glass">
+            <h3>Basic FASD Messages</h3>
+            <p>Fetal Alcohol Spectrum Disorders are caused by alcohol exposure at any point during pregnancy. There is <strong>no safe amount, no safe time, and no safe type</strong> of alcohol during pregnancy.</p>
+            <ul class="bullet-list">
+                <li>FASD is 100% preventable — simply by not drinking during pregnancy.</li>
+                <li>FASD is 100% permanent — the brain damage cannot be reversed.</li>
+                <li>Alcohol passes through the placenta and reaches the baby's bloodstream.</li>
+                <li>Damage occurs at every stage of pregnancy, not only the first trimester.</li>
+            </ul>
+            <a href="about.html" class="btn-primary" style="font-size:.88rem; padding:11px 22px;">
+                Learn more
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
+
+        <div class="feature-glass">
+            <h3>The Western Cape FASD Network</h3>
+            <p>Established in 2001, the WC FASD Network brings together government, NGOs, researchers and healthcare professionals united in preventing FASD across the Western Cape.</p>
+            <ul class="bullet-list">
+                <li>FAS declared a provincial health priority in 2001–2002.</li>
+                <li>Annual 9 September International FASD Awareness Day events.</li>
+                <li>Training manuals, conferences, and community awareness campaigns.</li>
+                <li>Partners include FARR, Dopstop, MRC, UCT, Stellenbosch University and more.</li>
+            </ul>
+            <a href="task-team.html" class="btn-primary" style="font-size:.88rem; padding:11px 22px;">
+                Meet the team
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="feature-row" data-reveal>
+        <div class="feature-glass">
+            <h3>Supporting Individuals with FASD</h3>
+            <p>Whether you are a parent, teacher or caregiver, understanding how FASD affects development at each life stage makes a real difference.</p>
+            <ul class="bullet-list">
+                <li>Build on strengths — focus on unique talents and celebrate small progress.</li>
+                <li>Provide structure, consistency and predictable routines.</li>
+                <li>Use visual clues: timetables, pictures and practical demonstrations.</li>
+                <li>Patience and positive reinforcement over punishment.</li>
+            </ul>
+            <a href="supporting-someone.html" class="btn-primary" style="font-size:.88rem; padding:11px 22px;">
+                View all support tips
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
+
+        <div class="feature-glass">
+            <h3>Early Intervention &amp; Diagnosis</h3>
+            <p>Early identification of FASD is crucial for improving long-term outcomes. The sooner support is in place, the better the developmental trajectory.</p>
+            <ul class="bullet-list">
+                <li>Be aware of developmental delays, learning challenges, or atypical behaviours.</li>
+                <li>Go to your nearest clinic and ask that your child be tested.</li>
+                <li>Only a specially trained doctor can diagnose FASD.</li>
+                <li>It is never too late to access support and specialist services.</li>
+            </ul>
+            <a href="contact-us.html" class="btn-primary" style="font-size:.88rem; padding:11px 22px;">
+                Find diagnostic services
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="cta-glass" data-reveal>
+        <div>
+            <h2>Ready to find support?</h2>
+            <p>Contact our team or locate your nearest Matrix® clinic across Cape Town. Help is available and you are not alone.</p>
+        </div>
+        <a href="contact-us.html" class="send">
+            <span class="text">Contact Us</span>
+            <span class="icon">
+                <svg viewBox="0 0 512.005 512.005">
+                    <path d="M511.658 51.675c2.496-11.619-8.895-21.416-20.007-17.176l-482 184a15 15 0 00-.054 28.006L145 298.8v164.713a15 15 0 0028.396 6.75l56.001-111.128 136.664 101.423c8.313 6.17 20.262 2.246 23.287-7.669C516.947 34.532 511.431 52.726 511.658 51.675zm-118.981 52.718L157.874 271.612 56.846 232.594zM175 296.245l204.668-145.757c-176.114 185.79-166.916 176.011-167.684 177.045-1.141 1.535 1.985-4.448-36.984 72.882zm191.858 127.546l-120.296-89.276 217.511-229.462z"/>
+                </svg>
+            </span>
+        </a>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p>City Health Department<br>City of Cape Town</p>
+            <p style="margin-top:10px;">Representative: Letitia Bosch</p>
+            <a href="mailto:info@fasdawareness.org" style="margin-top:8px;">info@fasdawareness.org</a>
+        </div>
+        <div class="footer-col">
+            <h4>About &amp; Team</h4>
+            <ul>
+                <li><a href="about.html">What is FASD</a></li>
+                <li><a href="task-team.html">Task Team</a></li>
+                <li><a href="health-promotion.html">Health Promotion</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="supporting-someone.html">Supporting Someone</a></li>
+                <li><a href="living-with-someone.html">Living with Someone</a></li>
+                <li><a href="qa.html">Q &amp; A</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Network Partners</h4>
+            <p>FARR — Foundation for Alcohol Related Research</p>
+            <p style="margin-top:6px;">Dopstop · MRC · UCT · Stellenbosch University</p>
+            <p style="margin-top:6px;">Western Cape Department of Health</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 FASD Awareness South Africa. Information provided for educational purposes only.
+    </div>
+</footer>
+
+<script>
+    // Mobile toggle
+    const toggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
