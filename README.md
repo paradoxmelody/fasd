@@ -1,4 +1,4 @@
-[readme-studio-generated (1).md](https://github.com/user-attachments/files/26546314/readme-studio-generated.1.md)# 🚀 FASD South Africa
+(https://github.com/user-attachments/files/26546314/readme-studio-generated.1.md)# 🚀 FASD South Africa
 
 <div align="center">
 
